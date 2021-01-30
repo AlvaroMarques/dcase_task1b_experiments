@@ -57,26 +57,11 @@ def extract_features_thread(start, stop):
         count += 1
         logging.info("{} / {} = {:.2f}%".format(count, size, (count/size)*100 ))
 
-a = threading.Thread(target=extract_features_thread, args=(0, size//4), daemon=True)
-b = threading.Thread(target=extract_features_thread, args=(size//4, 2*(size//4)), daemon=True)
-c = threading.Thread(target=extract_features_thread, args=(2*(size//4), 3*(size//4)), daemon=True)
-d = threading.Thread(target=extract_features_thread, args=(3*(size//4), size), daemon=True)
-a.start()
-b.start()
-c.start()
-d.start()
-a.join()
-b.join()
-c.join()
-d.join()
-'''
-if __name__ == "__main__":
+S = 4
+threads = [threading.Thread(target=extract_features_thread, args=(i*size//(S), (i+1)*size//(S)), daemon=True) for i in range(S)]
 
-    logging.info("Main    : before creating thread")
-    x = threading.Thread(target=thread_function, args=(1,), daemon=True)
-    logging.info("Main    : before running thread")
-    x.start()
-    logging.info("Main    : wait for the thread to finish")
-    x.join()
-    logging.info("Main    : all done")
-'''
+for i_thread, _ in enumerate(threads):
+    threads[i_thread].start()
+
+for i_thread, _ in enumerate(threads):
+    threads[i_thread].join()

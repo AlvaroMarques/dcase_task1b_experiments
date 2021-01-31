@@ -67,9 +67,9 @@ model.summary()
 predictions = np.array([])
 
 for i, (x, y) in enumerate(dataset_test):
-    print("{} / {} = {:.2f}% Completo".format(i*1024, SIZE, (i*1024) / SIZE)*100)
+    print("{} / {} = {:.2f}% Completo".format(i*1024, SIZE, 100 * (i*1024) / SIZE))
     y_ = model(x, training=False)
     predictions = np.append(predictions, encoder.inverse_transform(y_.numpy()).reshape(-1))
 
-evaluate['predicitons'] = predictions
+evaluate['predcitions'] = predictions
 evaluate.to_csv("evaluate_{}.csv".format(MODEL_INPUT.replace(".h5", "")), index=False)
